@@ -331,7 +331,17 @@ require('lazy').setup({
   -- you do for a plugin at the top level, you can do for a dependency.
   --
   -- Use the `dependencies` key to specify the dependencies of a particular plugin
-
+  {
+    {
+      'nvim-tree/nvim-web-devicons',
+      dependencies = {
+        'nvim-treesitter/nvim-treesitter',
+      },
+      config = function()
+        require('nvim-web-devicons').setup() -- Ensure setup function is here
+      end,
+    },
+  },
   { -- Fuzzy Finder (files, lsp, etc)
     'nvim-telescope/telescope.nvim',
     event = 'VimEnter',
@@ -886,6 +896,7 @@ require('lazy').setup({
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     main = 'nvim-treesitter.configs', -- Sets main module to use for opts
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
       ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' },
@@ -914,14 +925,12 @@ require('lazy').setup({
 
   -- NOTE: Next step on your Neovim journey: Add/Configure additional plugins for Kickstart
   --
-  --  Here are some example plugins that I've included in the Kickstart repository.
-  --  Uncomment any of the lines below to enable them (you will need to restart nvim).
-  --
+  --  Here are some example plugins that I've included in the Kickstart repository. Uncomment any of the lines below to enable them (you will need to restart nvim).
   -- require 'kickstart.plugins.debug',
   -- require 'kickstart.plugins.indent_line',
   -- require 'kickstart.plugins.lint',
   -- require 'kickstart.plugins.autopairs',
-  -- require 'kickstart.plugins.neo-tree',
+  require 'kickstart.plugins.neo-tree',
   -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
@@ -930,6 +939,33 @@ require('lazy').setup({
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   --    For additional information, see `:help lazy.nvim-lazy.nvim-structuring-your-plugins`
   -- { import = 'custom.plugins' },
+
+  -- My Personal Plugins
+
+  {
+    'dhruvasagar/vim-table-mode',
+    config = function()
+      vim.g.table_mode_corner = '|'
+    end,
+  },
+
+  {
+    'MeanderingProgrammer/render-markdown.nvim',
+    main = 'render-markdown',
+    opts = {},
+    name = 'render-markdown',
+    dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' }, -- if you use the mini.nvim suite
+    -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.icons' }, -- if you use standalone mini plugins
+    -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
+  },
+
+  -- Put your Keybindings Here
+
+  vim.api.nvim_set_keymap('n', '<leader>l', ':edit C:\\Users\\rybot\\AppData\\Local\\nvim\\init.lua<CR>', { noremap = true, silent = true }),
+
+  vim.api.nvim_set_keymap('n', '<leader>de', ':cd C:\\\\Design\\ Folder\\\\RBGithub<CR>:Neotree toggle<CR>', { noremap = true, silent = true }),
+
+  vim.api.nvim_set_keymap('n', '<leader>e', ':Neotree toggle<CR>', { noremap = true, silent = true }),
 }, {
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
@@ -952,5 +988,7 @@ require('lazy').setup({
   },
 })
 
+require('mini.icons').setup()
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
+--

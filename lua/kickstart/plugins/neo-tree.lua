@@ -6,7 +6,7 @@ return {
   version = '*',
   dependencies = {
     'nvim-lua/plenary.nvim',
-    'nvim-tree/nvim-web-devicons', -- not strictly required, but recommended
+    'kyazdani42/nvim-web-devicons', -- corrected the dependency path for web devicons
     'MunifTanjim/nui.nvim',
   },
   cmd = 'Neotree',
@@ -15,6 +15,10 @@ return {
   },
   opts = {
     filesystem = {
+      filtered_items = {
+        hide_dotfiles = false,  -- Show hidden files (files starting with a dot)
+        hide_gitignored = false  -- Show git-ignored files
+      },
       window = {
         mappings = {
           ['\\'] = 'close_window',
@@ -23,3 +27,4 @@ return {
     },
   },
 }
+
