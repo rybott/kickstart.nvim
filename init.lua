@@ -931,6 +931,7 @@ require('lazy').setup({
   -- require 'kickstart.plugins.lint',
   -- require 'kickstart.plugins.autopairs',
   require 'kickstart.plugins.neo-tree',
+  require 'kickstart.plugins.lazygit',
   -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
@@ -961,9 +962,13 @@ require('lazy').setup({
 
   -- Put your Keybindings Here
 
-  vim.api.nvim_set_keymap('n', '<leader>l', ':edit C:\\Users\\rybot\\AppData\\Local\\nvim\\init.lua<CR>', { noremap = true, silent = true }),
+  vim.api.nvim_set_keymap('n', '<leader>cv', '"+', { noremap = true, silent = true }),
+
+  vim.api.nvim_set_keymap('n', '<leader>la', ':edit C:\\Users\\rybot\\AppData\\Local\\nvim\\init.lua<CR>', { noremap = true, silent = true }),
 
   vim.api.nvim_set_keymap('n', '<leader>de', ':cd C:\\\\Design\\ Folder\\\\RBGithub<CR>:Neotree toggle<CR>', { noremap = true, silent = true }),
+
+  vim.api.nvim_set_keymap('n', '<leader>lg', ':lua vim.cmd("lcd %:p:h")<CR>:LazyGit<CR>', { noremap = true, silent = true }),
 
   vim.api.nvim_set_keymap('n', '<leader>e', ':Neotree toggle<CR>', { noremap = true, silent = true }),
 }, {
@@ -991,4 +996,6 @@ require('lazy').setup({
 require('mini.icons').setup()
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
+--
+--
 --
