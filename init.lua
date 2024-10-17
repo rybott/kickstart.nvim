@@ -961,8 +961,13 @@ require('lazy').setup({
   },
 
   -- Put your Keybindings Here
+  --
 
-  vim.api.nvim_set_keymap('n', '<leader>cv', '"+', { noremap = true, silent = true }),
+  vim.api.nvim_set_keymap('n', '<leader>zf', 'z=<CR>', { noremap = true, silent = true }),
+
+  vim.api.nvim_set_keymap('n', '<leader>zz', '1z=<CR>', { noremap = true, silent = true }),
+
+  vim.api.nvim_set_keymap('n', 'kk', '"+', { noremap = true, silent = true }),
 
   vim.api.nvim_set_keymap('n', '<leader>la', ':edit C:\\Users\\rybot\\AppData\\Local\\nvim\\init.lua<CR>', { noremap = true, silent = true }),
 
@@ -998,4 +1003,26 @@ require('mini.icons').setup()
 -- vim: ts=2 sts=2 sw=2 et
 --
 --
---
+vim.cmd [[autocmd FileType markdown setlocal spell]]
+
+vim.cmd [[
+
+  autocmd FileType markdown inoremap <silent> <C-b> <Esc>bi**<Esc>ea**<Esc>i
+
+  autocmd FileType markdown inoremap <silent> <C-i> <Esc>bi*<Esc>ea*<Esc>i
+]]
+
+vim.api.nvim_set_keymap('i', '<Tab>', '<Tab>', { noremap = true, silent = true })
+
+-- Define a group for text-related settings
+vim.api.nvim_create_augroup('TextFormatting', { clear = true })
+
+-- Add autocommands to the group
+vim.api.nvim_create_autocmd('FileType', {
+  group = 'TextFormatting',
+  pattern = { 'text', 'markdown' },
+  callback = function()
+    vim.o.wrap = true
+    vim.o.linebreak = true
+  end,
+})
