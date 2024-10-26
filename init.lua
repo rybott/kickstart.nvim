@@ -1004,20 +1004,6 @@ require('lazy').setup({
     -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
   },
 
-  {
-    'projekt0n/github-nvim-theme',
-    name = 'github-theme',
-    lazy = false, -- make sure we load this during startup if it is your main colorscheme
-    priority = 1000, -- make sure to load this before all the other start plugins
-    config = function()
-      require('github-theme').setup {
-        -- ...
-      }
-
-      vim.cmd 'colorscheme github_dark'
-    end,
-  },
-
   -- Put your Keybindings Here
   --
 
@@ -1025,7 +1011,7 @@ require('lazy').setup({
 
   vim.api.nvim_set_keymap('n', '<leader>zz', '1z=<CR>', { noremap = true, silent = true }),
 
-  vim.api.nvim_set_keymap('n', 'kk', '"+', { noremap = true, silent = true }),
+  vim.api.nvim_set_keymap('n', '<leader>kk', '"+', { noremap = true, silent = true }),
 
   vim.api.nvim_set_keymap('n', '<leader>la', ':edit C:\\Users\\rybot\\AppData\\Local\\nvim\\init.lua<CR>', { noremap = true, silent = true }),
 
