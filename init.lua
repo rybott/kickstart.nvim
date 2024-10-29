@@ -1004,8 +1004,76 @@ require('lazy').setup({
     -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
   },
 
+  {
+    'Vigemus/iron.nvim',
+    config = function()
+      local iron = require 'iron.core'
+      local view = require 'iron.view'
+
+      iron.setup {
+        config = {
+          scratch_repl = true,
+          repl_definition = {
+            sh = { command = { 'zsh' } },
+            python = {
+              command = { 'python' }, -- Change to "python3" or the absolute path if necessary
+              format = require('iron.fts.common').bracketed_paste_python,
+            },
+          },
+          repl_open_cmd = view.split.vertical.botright(50), -- Change this to any of the examples below as needed
+          -- Additional examples of `repl_open_cmd`:
+          -- repl_open_cmd = "vertical botright 80 split",  -- Vim command format
+          -- repl_open_cmd = view.split.vertical.botright(0.61903398875),  -- Fractional size
+          -- repl_open_cmd = view.split("40%"),  -- Size as a percentage
+          -- repl_open_cmd = view.split.topleft(function()
+          --   if some_check then
+          --     return vim.o.lines * 0.4
+          --   end
+          --   return 20
+          -- end),  -- Custom logic for size
+          -- repl_open_cmd = view.split("40%", {
+          --   winfixwidth = false,
+          --   winfixheight = false,
+          --   number = true  -- Additional window options
+          -- }),
+        },
+        keymaps = {
+          send_motion = '<space>sc',
+          visual_send = '<space>sc',
+          send_file = '<space>sf',
+          send_line = '<space>sl',
+          send_paragraph = '<space>sp',
+          send_until_cursor = '<space>su',
+          send_mark = '<space>sm',
+          mark_motion = '<space>mc',
+          mark_visual = '<space>mc',
+          remove_mark = '<space>md',
+          cr = '<space>s<cr>',
+          interrupt = '<space>s<space>',
+          exit = '<space>sq',
+          clear = '<space>cl',
+        },
+        highlight = {
+          italic = true,
+        },
+        ignore_blank_lines = true,
+      }
+
+      -- Keybindings for iron.nvim commands
+      vim.keymap.set('n', '<space>rs', '<cmd>IronRepl<cr>')
+      vim.keymap.set('n', '<space>rr', '<cmd>IronRestart<cr>')
+      vim.keymap.set('n', '<space>rf', '<cmd>IronFocus<cr>')
+      vim.keymap.set('n', '<space>rh', '<cmd>IronHide<cr>')
+    end,
+  },
+
   -- Put your Keybindings Here
   --
+
+  -- Define a function to open a split and run the current file
+  --
+
+  -- Define a function to open a split and run the current file with Ctrl + r
 
   vim.api.nvim_set_keymap('n', '<leader>zf', 'z=<CR>', { noremap = true, silent = true }),
 
@@ -1014,6 +1082,13 @@ require('lazy').setup({
   vim.api.nvim_set_keymap('n', '<leader>kk', '"+', { noremap = true, silent = true }),
 
   vim.api.nvim_set_keymap('n', '<leader>la', ':edit C:\\Users\\rybot\\AppData\\Local\\nvim\\init.lua<CR>', { noremap = true, silent = true }),
+
+  vim.api.nvim_set_keymap(
+    'n',
+    '<leader>ld',
+    ':edit C:\\\\Design\\ Folder\\\\RBGithub\\\\notes\\\\General\\\\Needs_Research.md<CR>',
+    { noremap = true, silent = true }
+  ),
 
   vim.api.nvim_set_keymap('n', '<leader>de', ':cd C:\\\\Design\\ Folder\\\\RBGithub<CR>:Neotree toggle<CR>', { noremap = true, silent = true }),
 
@@ -1074,3 +1149,23 @@ vim.api.nvim_create_autocmd('FileType', {
     vim.o.linebreak = true
   end,
 })
+
+vim.api.nvim_set_keymap('n', '<C-r>', ':lua RunPythonInSplit()<CR>', { noremap = true, silent = true })
+
+function RunPythonInSplit()
+  -- Get the absolute path of the current file and ensure it’s properly quoted for Windows
+  local file_path = vim.fn.expand '%:p'
+
+  -- Save the buffer if it has unsaved changes
+  if vim.bo.modified then
+    vim.cmd 'write'
+  end
+
+  -- Check if the file path is valid and readable
+  if file_path == '' or vim.fn.filereadable(file_path) == 0 then
+    print "Unable to access the current file. Make sure it's saved and readable."
+  else
+    -- Open a split and execute the Python file in a terminal, with quotes around the file path
+    vim.cmd('vsplit | term python "' .. file_path .. '"')
+  end
+end
